@@ -59,7 +59,7 @@ const SideBar = () => {
         <CommandEmpty>No results found.</CommandEmpty>
 
         <CommandGroup heading="Suggestions">
-          {menus.map((menu,index) => (
+          {menus.map((menu, index) => (
             <Link key={index} href={menu.path}>
               <CommandItem
                 className={`${
@@ -78,13 +78,19 @@ const SideBar = () => {
         <CommandSeparator />
 
         <CommandGroup heading="Settings">
-          <Link href={'/profile'}>
-          <CommandItem>
-            <User className="mr-2 h-4 w-4" />
-            <span className="text-black">Profile</span>
-          </CommandItem>
+          <Link href={"/profile"}>
+            <CommandItem
+              className={`${
+                currentPath === "/profile"
+                  ? "active"
+                  : "mb-2 duration-150  hover:translate-y-1 hover:bg-gray-700 hover:text-white hover:font-bold "
+              }`}
+            >
+              <User className="mr-2 h-4 w-4" />
+              <span >Profile</span>
+            </CommandItem>
           </Link>
-          <CommandItem className="text-black hover:font-bold hover:text-white hover:bg-black hover:transition hover:ease-in-out hover:delay-150 hover:duration-300">
+          <CommandItem className="text-black mt-2 hover:font-bold hover:text-white hover:bg-black hover:transition hover:ease-in-out hover:delay-150 hover:duration-300">
             <LogOut className="mr-2 h-4 w-4" />
             <button onClick={() => signOut()}>Logout</button>
           </CommandItem>

@@ -1,34 +1,59 @@
 import React from "react";
 import Image from "next/image";
 import profilePhoto from "../../public/assets/splash.png";
-const PostItem = () => {
+import { log } from "console";
+
+interface postProps {
+  key: number;
+  post: props;
+}
+interface props{
+
+
+
+    author: {
+        id: string;
+        email: string;
+        name: string | null;
+        password: string;
+        imageUrl: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    };
+    id: string;
+    title: string;
+    content: string;
+    createdAt: Date;
+    updatedAt: Date;
+    authorEmail: string;
+  } 
+
+
+
+
+const PostItem = ({ post }:postProps) => {
+
   return (
-    <div className="cursor-pointer overflow-hidden relative transition-all duration-500 hover:translate-y-2 w-72 h-44 bg-neutral-50 rounded-lg shadow-xl flex flex-col items-center justify-evenly gap-2 p-2 before:absolute before:w-full hover:before:top-0 before:duration-500 before:-top-1 before:h-1 before:bg-gray-200">
-      <div className="flex   space-x-4 items-center ">
+    <div className="cursor-pointer overflow-hidden relative transition-all duration-500 hover:translate-y-2 w-80 h-44 bg-neutral-50 rounded-lg shadow-xl flex flex-col items-center justify-evenly gap-2 p-2 before:absolute before:w-full hover:before:top-0 before:duration-500 before:-top-1 before:h-1 before:bg-gray-200">
+      <div className="flex items-center w-full px-4 ">
         <Image
+          className="w-12 mr-3 rounded-full border object-cover"
           src={profilePhoto}
-          alt="image"
-          className="h-14 w-14 rounded-full object-cover"
+          alt="Junior Coders"
           height={50}
           width={50}
           style={{ width: 50, height: 50 }}
         />
-        <div>
-          <h2 className="text-black font-bold text-xl">bradtraversy</h2>
-          <p className="mt-1 text-gray-400 text-sm cursor-pointer">
-            Visit Profile
-          </p>
+        <div className="text-left">
+          <h3 className="leading-4">{post.author.name}</h3>
+          <span className="text-xs text-gray-500">Published: {post.updatedAt.toDateString()}</span>
         </div>
       </div>
       <div>
-        <span className="font-bold">Card title</span>
-        <p className="line-clamp-3">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
+        <span className="font-bold line-clamp-1">{post.title}</span>
+        <p className="line-clamp-3">{post.content}</p>
       </div>
+
     </div>
   );
 };

@@ -22,7 +22,7 @@ const Posts = async () => {
         <section className="grid grid-cols-3 gap-5 mx-auto ">
           {posts ? (
             posts.map((post, index) => {
-              return <PostItem key={index} />;
+              return <PostItem key={index} post={post} />;
             })
           ) : (
             <div>Aucun post</div>

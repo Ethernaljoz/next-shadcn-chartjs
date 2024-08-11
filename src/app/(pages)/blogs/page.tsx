@@ -9,7 +9,11 @@ import React from 'react'
 const Blogs = async() => {
 
     const currentUser = await getCurrentUser();
-    const blogs = await prisma.blog.findMany({ orderBy: { id: "desc" } });
+    const blogs = await prisma.blog.findMany({
+      orderBy: { id: "desc" },
+      include: { author: true },
+    });
+    
     if(!blogs){
       return <Loading />
     }

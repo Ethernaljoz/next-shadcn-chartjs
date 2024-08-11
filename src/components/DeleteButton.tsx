@@ -29,7 +29,12 @@ const DeleteButton = ({path,id}:props) => {
       console.log(res)
       setIsLoading(false)
       setShowModal(false)
-      router.refresh()
+      if(path === "blog" || path === "post"){
+        router.back()
+      }else{
+        
+        router.refresh()
+      }
     })
      .catch((error)=>{
       console.log(error)
