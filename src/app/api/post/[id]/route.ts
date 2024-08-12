@@ -32,7 +32,7 @@ export async function PUT(req:Request, {params}:Params){
       )
     }
 
-    const { newTitle, newContent } = await req.json()
+    const { title:newTitle, content:newContent } = await req.json()
     
     await prisma.post.update({
       where:{id},

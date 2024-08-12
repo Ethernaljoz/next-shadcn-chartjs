@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import getCurrentUser from "@/lib/session";
+import { log } from "console";
 import { NextResponse } from "next/server";
 
 interface Params {
@@ -33,17 +34,18 @@ export async function PUT(req: Request, { params }: Params) {
       );
     }
 
-    const { newTitle,newContent,newImageUrl } = await req.json();
+    const { title:newTitle,content:newContent,imageUrl:newImageUrl } = await req.json();
 
+    console.log("l image url",newImageUrl)
 
       await prisma.blog.update({
         where: { id },
-        data: { 
-            title:newTitle ?newTitle:blog.title,
-            content:newContent ? newContent:blog.content,
-            imageUrl: newContent ?newImageUrl:blog.imageUrl 
+        data: {
+          title: newTitle !== "" ? newTitle : blog.title,
+          content: newContent !== "" ? newContent : blog.content,
+          imageUrl: newContent !== "" ? newImageUrl : blog.imageUrl,
         },
-      });
+      }).then(response=>console.log("response update info",response));
 
       return NextResponse.json({ message: "blog is edited" }, { status: 200 });
 

@@ -65,13 +65,13 @@ const BlogDetailPage = async ({ params }: props) => {
               />
             </div>
 
-            <p className="px-5 mt-3 text-gray-600 text-justify ">
+            <p className={`px-5 mt-3 text-gray-600 text-justify ${currentUser?.email !== blog.authorEmail ? "pb-20":"" }`}>
               {blog.content}
             </p>
 
             {currentUser?.email === blog.authorEmail ? (
               <div className="mt-7 flex justify-end items-center gap-5 px-5 pb-20">
-                <BlogEditForm />
+                <BlogEditForm blog={blog} />
                 <DeleteButton path="blog" id={blog.id} />
               </div>
             ) : (

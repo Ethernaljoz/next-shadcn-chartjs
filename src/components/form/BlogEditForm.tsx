@@ -25,16 +25,41 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 
+interface blogProps {
+  // key: number;
+  blog: props;
+}
+interface props {
+  author: {
+    id: string;
+    email: string;
+    name: string | null;
+    password: string;
+    imageUrl: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  id: string;
+  title: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+  authorEmail: string;
+} 
 
 
 
 
-export default function BlogEditForm() {
+
+
+
+
+export default function BlogEditForm({blog}:blogProps) {
   const form = useForm<z.infer<typeof BlogSchema>>({
     resolver: zodResolver(BlogSchema),
     defaultValues: {
-      title: "",
-      content: "",
+      title: blog.title,
+      content: blog.content,
       imageUrl:""
     },
   });
@@ -64,20 +89,19 @@ export default function BlogEditForm() {
 
   const onSubmit = async (values: z.infer<typeof BlogSchema>) => {
     setIsLoading(true);
+    console.log("hello it is value :",values)
 
     await axios
-      .post("/api/blog", values)
+      .put(`/api/blog/${blog.id}`, values)
       .then((res) => {
         setIsLoading(false);
         setShowModal(false);
         form.reset();
-        setImageUrl("")
+        setImageUrl("");
         router.refresh();
         toast({
           variant: "success",
-          title: "blog create successfully ",
-
-          // action: <ToastAction altText="Try again">Try again</ToastAction>,
+          title: "blog edited successfully ",
         });
       })
       .catch((error) => {
@@ -86,7 +110,6 @@ export default function BlogEditForm() {
         toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
-          
         });
       });
   };
@@ -211,11 +234,13 @@ export default function BlogEditForm() {
                             ) => {
                               const file = e.target.files
                                 ? e.target.files[0]
-                                : null;
-                              const base64 = await convertToBase64(file);
+                                : "";
+                                if(file !== ""){
+                                  const base64 = await convertToBase64(file);
+                                  onChange(base64);
+                                  setImageUrl(base64 as string);
+                                }
 
-                              onChange(base64);
-                              setImageUrl(base64 as string);
                             }}
                             className="h-10 hidden"
                             type="file"
