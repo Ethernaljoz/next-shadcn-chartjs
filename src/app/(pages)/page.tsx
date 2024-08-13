@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import DashboardCard from "@/components/DashboardCard";
+import ChartBar from "@/components/Chart";
 
 
 
@@ -20,6 +21,9 @@ export default function Home() {
           <h2 className="text-4xl font-bold">Dashboard</h2>
         </header>
         <DashboardCard />
+        <section>
+          <ChartBar />
+        </section>
         
       </main>
     </div>

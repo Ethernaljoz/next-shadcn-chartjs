@@ -5,15 +5,34 @@ import prisma from "@/lib/prisma";
 import getCurrentUser from "@/lib/session";
 import React from "react";
 
-// isCompleted={false}
+
 
 const TodoList = async () => {
   const currentUser = await getCurrentUser();
-  const todos = await prisma.todo.findMany({ orderBy: { id: "desc" } });
-  // const todos = await prisma.todo.findMany({orderBy:{id:'desc'},include:{author:true}})
-  if (!todos) {
-    return <Loading />;
+   let todos;
+   let userTodos
+  if(currentUser?.email){
+
+     todos = await prisma.todo.findMany({where:{authorEmail:currentUser!.email} ,orderBy: { id: "desc" } });
+     userTodos = todos.map((todo) => {
+      if(todo.isComplete === false){
+        return todo
+      }
+      })
+      // todos=userTodos
+      
+    if (!todos) {
+      return <Loading />;
+    }
   }
+
+  // const userTodo = todos
+  //   ? todos.filter((todo) => {
+  //     todo.isComplete === false
+  //     })
+  //   : null;
+
+  console.log('user todo',userTodos)
   return (
     <div className="flex h-screen">
       <main className="flex-1 p-6 bg-white">
@@ -22,18 +41,20 @@ const TodoList = async () => {
           <TodoForm />
         </header>
         <section className="flex flex-col gap-3 mx-auto max-w-3xl">
-          {todos ? (
+          {todos ? 
+          
             todos.map((todo) => {
-              return !todo.isComplete &&
-                todo.authorEmail === currentUser?.email ? (
-                <Task key={todo.id} todo={todo} />
-              ) : (
-                ""
-              );
-            })
-          ) : (
-            <div>Aucun todo</div>
-          )}
+                return <Task key={todo!.id} todo={todo} />;
+              })
+            : 
+               <div  className="text-xl text-center">
+                Aucun todo actuellement
+              </div>
+            
+          // : (
+          //   <div className="text-xl text-center">Aucun todo</div>
+          // )
+          }
         </section>
       </main>
     </div>

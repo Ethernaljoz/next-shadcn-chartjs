@@ -22,12 +22,12 @@ export const TodoSchema = z.object({
 
 
 export const PostSchema = z.object({
-  title: z.string().min(3).max(30),
+  title: z.string().min(3).max(50),
   content: z.string().min(5).max(225),
 });
 
 export const BlogSchema = z.object({
-  title: z.string().min(3).max(30),
+  title: z.string().min(3).max(50),
   content: z.string().min(5),
   imageUrl: z.string().optional()
   // imageUrl: z.instanceof(File),

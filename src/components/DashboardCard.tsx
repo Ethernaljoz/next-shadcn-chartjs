@@ -22,8 +22,20 @@ import {
   LogOut,
   FileType,
 } from "lucide-react";
+import getCurrentUser from "@/lib/session";
+import prisma from "@/lib/prisma";
 
-export default function DashboardCard() {
+ const DashboardCard = async () =>{
+  const currentUser = await getCurrentUser()
+  let todos
+  let blogs
+  let posts
+  if(currentUser?.email){
+   todos = await prisma.todo.findMany({where:{authorEmail:currentUser!.email} ,orderBy: { id: "desc" } });
+   blogs = await prisma.blog.findMany({where:{authorEmail:currentUser!.email} ,orderBy: { id: "desc" } });
+   posts = await prisma.post.findMany({where:{authorEmail:currentUser!.email} ,orderBy: { id: "desc" } });
+    
+  }
   return (
     <section className="grid grid-cols-3 gap-6 mb-6">
       <Card className="col-span-1">
@@ -34,7 +46,7 @@ export default function DashboardCard() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
-          <span className="text-4xl font-bold">12,345</span>
+          <span className="text-4xl font-bold">{todos ? todos.length : 0}</span>
           <ClipboardCheck className="h-8 w-8 text-black" />
         </CardContent>
       </Card>
@@ -46,7 +58,7 @@ export default function DashboardCard() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
-          <span className="text-4xl font-bold">1,234</span>
+          <span className="text-4xl font-bold">{posts ? posts.length : 0}</span>
           <Newspaper className="h-8 w-8 text-black" />
         </CardContent>
       </Card>
@@ -58,10 +70,12 @@ export default function DashboardCard() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
-          <span className="text-4xl font-bold">12%</span>
+          <span className="text-4xl font-bold">{blogs ? blogs.length : 0}</span>
           <FileType className="h-8 w-8 text-blackpse" />
         </CardContent>
       </Card>
     </section>
   );
 }
+
+export default DashboardCard;

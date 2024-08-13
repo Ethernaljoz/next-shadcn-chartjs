@@ -26,17 +26,12 @@ interface postProps {
   post: props;
 }
 interface props{
-
-
-
     author: {
         id: string;
         email: string;
         name: string | null;
-        password: string;
         imageUrl: string | null;
-        createdAt: Date;
-        updatedAt: Date;
+
     };
     id: string;
     title: string;

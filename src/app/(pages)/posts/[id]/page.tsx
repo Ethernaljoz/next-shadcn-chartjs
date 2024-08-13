@@ -19,7 +19,16 @@ const PostDetailPage = async ({ params }: props) => {
   const currentUser = await getCurrentUser();
   const post = await prisma.post.findUnique({
     where: { id },
-    include: { author: true },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          imageUrl: true,
+          name: true,
+        },
+      },
+    },
   });
 
   if (!post) {

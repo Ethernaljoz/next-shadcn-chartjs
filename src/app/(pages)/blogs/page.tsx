@@ -2,16 +2,13 @@ import Loading from '@/app/loading';
 import BlogItem from '@/components/BlogItem';
 import BlogForm from '@/components/form/BlogForm';
 import prisma from '@/lib/prisma';
-import getCurrentUser from '@/lib/session';
 import React from 'react'
 
 
 const Blogs = async() => {
 
-    const currentUser = await getCurrentUser();
     const blogs = await prisma.blog.findMany({
       orderBy: { id: "desc" },
-      include: { author: true },
     });
     
     if(!blogs){

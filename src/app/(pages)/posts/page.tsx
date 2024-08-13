@@ -8,7 +8,19 @@ import prisma from '@/lib/prisma';
 
 
 const Posts = async () => {
-  const posts = await prisma.post.findMany({orderBy:{id:'desc'},include:{author:true}})
+  const posts = await prisma.post.findMany({
+    orderBy: { id: "desc" },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          imageUrl: true,
+          name:true
+        },
+      },
+    },
+  });
   if (!posts) {
     return <Loading />;
   }
