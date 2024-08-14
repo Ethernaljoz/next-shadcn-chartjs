@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Loader2, X } from "lucide-react";
+import { toast } from "../ui/use-toast";
 
 export default function TodoForm() {
   const form = useForm<z.infer<typeof TodoSchema>>({
@@ -43,10 +44,18 @@ export default function TodoForm() {
         setIsLoading(false);
         setShowModal(false);
         router.refresh();
+        toast({
+          variant: "success",
+          title: "todo create successfully ",
+        });
       })
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+        });
       });
   };
 

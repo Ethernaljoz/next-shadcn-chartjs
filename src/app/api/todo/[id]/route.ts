@@ -35,32 +35,19 @@ export async function PUT(req: Request, { params }:Params) {
     }
 
     const { task, isComplete } = await req.json();
+    console.log(isComplete)
 
-    if (task) {
-      await prisma.todo.update({
-        where: { id },
-        data: { task },
-      });
+    await prisma.todo.update({
+      where: { id },
+      data: {
+        task: task ? task : todo.task,
+        isComplete: isComplete ? isComplete : todo.isComplete,
+      },
+    }).then(res => console.log(res))
 
-      return NextResponse.json(
-        { message: "task is edited" },
-        { status: 200 }
-      );
-    }
+    return NextResponse.json({ message: "todo updates" }, { status: 200 });
 
-    if (isComplete) {
-      await prisma.todo.update({
-        where: { id },
-        data: { isComplete },
-      });
-
-      return NextResponse.json(
-        { message: "task is done" },
-        { status: 200 }
-      );
-    }
-
-    return null;
+    
   } catch (error) {
     console.log(error);
     return NextResponse.json(

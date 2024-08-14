@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FilePenLine, Loader2 } from "lucide-react";
 import { X } from "lucide-react";
+import { toast } from "../ui/use-toast";
 
 interface formProps {
   oldValue: string;
@@ -49,10 +50,18 @@ export default function TodoEditForm({ oldValue, todoId }: formProps) {
         setShowModal(false);
         form.reset();
         router.refresh();
+        toast({
+          variant: "success",
+          title: "todo edited successfully ",
+        });
       })
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+        });
       });
   };
 

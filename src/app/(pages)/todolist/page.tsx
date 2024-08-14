@@ -5,22 +5,22 @@ import prisma from "@/lib/prisma";
 import getCurrentUser from "@/lib/session";
 import React from "react";
 
-
-
 const TodoList = async () => {
   const currentUser = await getCurrentUser();
-   let todos;
-   let userTodos
-  if(currentUser?.email){
+  let todos;
+  let userTodos;
+  if (currentUser?.email) {
+    todos = await prisma.todo.findMany({
+      where: { authorEmail: currentUser!.email },
+      orderBy: { id: "desc" },
+    });
+    if (todos) {
+      userTodos = todos.filter((todo) => {
+        todo.isComplete === false;
+      });
+    }
+    // todos=userTodos
 
-     todos = await prisma.todo.findMany({where:{authorEmail:currentUser!.email} ,orderBy: { id: "desc" } });
-     userTodos = todos.map((todo) => {
-      if(todo.isComplete === false){
-        return todo
-      }
-      })
-      // todos=userTodos
-      
     if (!todos) {
       return <Loading />;
     }
@@ -32,7 +32,7 @@ const TodoList = async () => {
   //     })
   //   : null;
 
-  console.log('user todo',userTodos)
+  console.log("user todo", userTodos);
   return (
     <div className="flex h-screen">
       <main className="flex-1 p-6 bg-white">
@@ -41,20 +41,18 @@ const TodoList = async () => {
           <TodoForm />
         </header>
         <section className="flex flex-col gap-3 mx-auto max-w-3xl">
-          {todos ? 
-          
+          {todos ? (
             todos.map((todo) => {
-                return <Task key={todo!.id} todo={todo} />;
-              })
-            : 
-               <div  className="text-xl text-center">
-                Aucun todo actuellement
-              </div>
-            
-          // : (
-          //   <div className="text-xl text-center">Aucun todo</div>
-          // )
-          }
+              return !todo.isComplete &&
+                todo.authorEmail === currentUser?.email ? (
+                <Task key={todo.id} todo={todo} />
+              ) : (
+                ""
+              );
+            })
+          ) : (
+            <div>Aucun todo</div>
+          )}
         </section>
       </main>
     </div>
@@ -62,3 +60,17 @@ const TodoList = async () => {
 };
 
 export default TodoList;
+
+// {
+//   todos ? (
+//     todos.map((todo) => {
+//       return !todo.isComplete && todo.authorEmail === currentUser?.email ? (
+//         <Task key={todo.id} todo={todo} />
+//       ) : (
+//         ""
+//       );
+//     })
+//   ) : (
+//     <div>Aucun todo</div>
+//   );
+// }

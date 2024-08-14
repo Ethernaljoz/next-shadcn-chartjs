@@ -34,7 +34,6 @@ const BlogItem = ({ blog }: blogProps) => {
             height={250}
             width={500}
             style={{ width: 500, height: 200 }}
-            layout="fixed"
             className="rounded-md shadow-lg object-cover "
           />
         </div>

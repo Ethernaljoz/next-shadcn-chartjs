@@ -2,7 +2,8 @@ import React from "react";
 import faker from "faker";
 import getCurrentUser from "@/lib/session";
 import prisma from "@/lib/prisma";
-import BarChart from "./BarChart";
+import BarChart from "./charts/BarChart";
+import DoughnutChart from "./charts/DoughnutChart";
 
 const labels = ["TodoLists", "Posts", "Blogs"];
 
@@ -49,8 +50,8 @@ const ChartComponent = async () => {
         position: "top" as const,
       },
       title: {
-        display: true,
-        text: "Chart.js Bar Chart",
+        display: false,
+        text: "Chart.js Chart",
       },
     },
   };
@@ -63,18 +64,23 @@ const ChartComponent = async () => {
     labels,
     datasets: [
       {
-        label: "Dataset 1",
+        label: "Count",
         data: tab,
-        backgroundColor: "rgba(23, 23, 23)",
+        backgroundColor: [
+          "rgba(43, 63, 228,0.8)",
+          "rgba(250, 192, 19,0.8)",
+          "rgba(253, 135, 135,0.8)",
+
+        ],
       },
     ],
   };
 
   return (
-    <div>
-      <h1>Bar chart</h1>
-      <div className="h-60 w-full">
+    <div className="mt-10 border rounded-lg shadow-sm mb-10">
+      <div className="h-72 w-full flex justify-between py-5 px-6 ">
         <BarChart options={options} data={data} />
+        <DoughnutChart options={options} data={data} />
       </div>
     </div>
   );

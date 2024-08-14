@@ -75,9 +75,7 @@ export default function BlogForm() {
         router.refresh();
         toast({
           variant: "success",
-          title: "blog create successfully ",
-
-          // action: <ToastAction altText="Try again">Try again</ToastAction>,
+          title: "blog create successfully "
         });
       })
       .catch((error) => {

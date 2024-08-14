@@ -45,13 +45,14 @@ interface dataType {
     datasets: {
         label: string;
         data: number[];
-        backgroundColor: string;
+        backgroundColor: string[];
     }[];
 }
 
 const BarChart = ({options, data}:barType) => {
   return (
      <Bar options={options} data={data} />
+
   )
 }
 

@@ -21,6 +21,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, X } from "lucide-react";
+import { toast } from "../ui/use-toast";
 
 interface postProps {
   post: props;
@@ -69,10 +70,18 @@ export default function PostForm({ post }:postProps) {
         setShowModal(false);
         form.reset();
         router.refresh();
+        toast({
+          variant: "success",
+          title: "post edited successfully ",
+        });
       })
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+        });
       });
   };
 
